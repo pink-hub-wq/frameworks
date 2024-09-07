@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seiryo.dao.ClassDao">
+	<resultMap id="ClassResultMap" type="com.seiryo.po.Class">
+		<id property="c_id" column="c_id" />
+		<result property="c_classid" column="c_classid" />
+		<result property="c_classname" column="c_classname" />
+		<result property="c_counsellor" column="c_counsellor" />
+	</resultMap>
+
+	<!-- 分页查询 -->
+	<select id="getClassList" parameterType="com.seiryo.po.Class"
+		resultMap="ClassResultMap">
+		select * from (select c.*, rownum rnum from (select * from d_class
+		<where>
+			<if test="c_classname!=null and c_classname!='' ">
+				and c_classname like '%${c_classname}%'
+			</if>
+			<if test="c_counsellor!=null and c_counsellor!=''">
+				and c_counsellor like '%${c_counsellor}%'
+			</if>
+			<if test="c_classid!=null and c_classid!=0">
+				and c_classid like '%${c_classid}%'
+			</if>
+		</where>
+		ORDER BY c_id ASC
+		) c
+		where rownum &lt;= #{pageSize}
+		) where rnum &gt; #{currentPage}
+	</select>
+
+	<!-- 查询数据总数 -->
+	<select id="totalCount" resultType="Integer">
+		select count(c_id) from d_class
+		<where>
+			<if test="c_classname!=null and c_classname!=''">
+				and c_classname like '%${c_classname}%'
+			</if>
+			<if test="c_counsellor!=null and c_counsellor!=''">
+				and c_counsellor like '%${c_counsellor}%'
+			</if>
+			<if test="c_classid!=null and c_classid!=0">
+				and c_classid like '%${c_classid}%'
+			</if>
+		</where>
+	</select>
+
+	<!-- 添加管理员信息 -->
+	<insert id="addClass" parameterType="com.seiryo.po.Class"
+		keyProperty="c_id" useGeneratedKeys="true" keyColumn="c_id">
+		insert into d_class (c_classid, c_classname, c_counsellor) values
+		(#{c_classid}, #{c_classname}, #{c_counsellor})
+	</insert>
+
+	<!-- 通过id删除管理员信息 -->
+	<delete id="deleteClass" parameterType="Integer">
+		delete from d_class where c_id=#{c_id}
+	</delete>
+
+	<select id="findClassById" parameterType="Integer"
+		resultMap="ClassResultMap">
+		select * from d_class where c_id=#{c_id}
+	</select>
+
+	<select id="getAll" resultMap="ClassResultMap">
+		select * from d_class
+	</select>
+
+	<!-- 修改管理员信息 -->
+	<update id="updateClass" parameterType="com.seiryo.po.Class">
+		update d_class
+		<set>
+			<if test="c_classid!=null and c_classid!=0">
+				c_classid=#{c_classid},
+			</if>
+			<if test="c_classname !=null and c_classname !=''">
+				c_classname=#{c_classname},
+			</if>
+			<if test="c_counsellor !=null and c_counsellor !=''">
+				c_counsellor=#{c_counsellor},
+			</if>
+		</set>
+		where c_id=#{c_id}
+	</update>
+
+	<resultMap type="com.seiryo.po.Class" id="cardAndInfo2">
+		<id property="c_id" column="c_id" />
+		<result property="c_classid" column="c_classid" />
+		<result property="c_classname" column="c_classname" />
+		<result property="c_counsellor" column="c_counsellor" />
+		<collection property="students"
+			ofType="com.seiryo.po.Student" javaType="ArrayList">
+			<id property="s_id" column="s_id" />
+			<result property="s_studentid" column="s_studentid" />
+			<result property="s_name" column="s_name" />
+			<result property="s_sex" column="s_sex" />
+			<result property="s_age" column="s_age" />
+			<result property="s_phone" column="s_phone" />
+			<result property="s_classid" column="s_classid" />
+			<result property="s_classname" column="s_classname" />
+			<result property="s_dormitoryid" column="s_dormitoryid" />
+		</collection>
+	</resultMap>
+
+	<select id="findClassStudent" parameterType="Class"
+		resultMap="cardAndInfo2">
+		SELECT uclass.c_id as c_id,uclass.c_classid as
+		c_classid,uclass.c_classname as c_classname,uclass.c_counsellor as
+		c_counsellor,
+		student.s_id as s_id,student.s_studentid as s_studentid,student.s_name as
+		s_name,student.s_sex as s_sex,student.s_age as s_age,
+		student.s_phone as s_phone,student.s_classid as s_classid,student.s_classname as
+		s_classname,student.s_dormitoryid as s_dormitoryid
+		FROM d_class uclass join d_student student
+		on uclass.c_classid = student.s_classid
+		and uclass.c_classname = student.s_classname
+		<where>
+			<if test="c_classname!=null and c_classname!='' ">
+				and c_classname like '%${c_classname}%'
+			</if>
+			<if test="c_classid!=null and c_classid!=0">
+				and c_classid like '%${c_classid}%'
+			</if>
+		</where>
+	</select>
+</mapper>

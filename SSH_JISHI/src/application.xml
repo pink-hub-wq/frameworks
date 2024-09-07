@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+<bean id="basicDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+		<property name="url" value="jdbc:sqlserver://localhost:1433;DataBaseName=shoppingTest;encrypt=true;trustServerCertificate=true;"></property>
+		<property name="username" value="sa"></property>
+		<property name="password" value="123"></property>
+	</bean>
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="basicDataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
+			</props>
+		</property>
+	<property name="mappingLocations">
+        <list>
+            <value>classpath:com/edu/seiryo/entity/UserInfo.hbm.xml</value>
+            <value>classpath:com/edu/seiryo/entity/Order.hbm.xml</value>
+            <value>classpath:com/edu/seiryo/entity/ShopInfo.hbm.xml</value>
+            <value>classpath:com/edu/seiryo/entity/OrderDetail.hbm.xml</value>
+            <value>classpath:com/edu/seiryo/entity/Log.hbm.xml</value>
+        </list>
+    </property>
+	</bean>
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<context:component-scan base-package="com.edu.seiryo"></context:component-scan>
+	<!-- 配置事务的传播特性 -->
+	<tx:advice id="txadvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- REQUIRED：支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。 
+				SUPPORTS：支持当前事务，如果当前没有事务，就以非事务方式执行。 
+				MANDATORY：支持当前事务，如果当前没有事务，就抛出异常。 
+				REQUIRES_NEW：新建事务，如果当前存在事务，把当前事务挂起。 
+				NOT_SUPPORTED：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。 
+				NEVER：以非事务方式执行，如果当前存在事务，则抛出异常。 
+				NESTED：支持当前事务，如果当前事务存在，则执行一个嵌套事务，如果当前没有事务，就新建一个事务。 
+			-->
+			<tx:method name="upd*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="queryById*" read-only="true" />
+			<tx:method name="login*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 切入 -->
+	<aop:config>
+		<!-- 匹配切入点 -->
+		<aop:pointcut id="allManagerMethod" expression="execution(* com.edu.seiryo.service.imp..*(..))" />
+		<!-- 切面 -->
+		<aop:advisor pointcut-ref="allManagerMethod" advice-ref="txadvice" />
+	</aop:config>
+	<!-- End 配置事务管理 -->
+</beans>

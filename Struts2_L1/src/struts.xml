@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+	<constant name="struts.devMode" value="true" />
+	<package name="mystruts" extends="struts-default" namespace="/">
+	
+	<!-- 传统访问 -->
+		<action name="UserAction" class="com.edu.seiryo.action.UserAction">
+			<result name="success">success.jsp</result>
+		</action>
+		<action name="UserAction2" class="com.edu.seiryo.action.UserAction" method="query">
+			<result name="success">success.jsp</result>
+		</action>
+		<action name="UserAction3" class="com.edu.seiryo.action.UserAction" method="update">
+			<result name="success">success.jsp</result>
+		</action>
+		
+	<!-- 通配符访问 -->
+		<action name="InterfaceAction_*" class="com.edu.seiryo.action.InterfaceAction" method="{1}">
+			<result name="success">success.jsp</result>
+		</action>
+		
+	<!-- 动态方法 -->
+		<action name="ExtendsAction" class="com.edu.seiryo.action.ExtendsAction">
+			<result name="success">success.jsp</result>
+		</action>
+	</package>
+</struts>

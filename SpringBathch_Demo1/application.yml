@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    username: sa
+    password: 123
+    url: jdbc:sqlserver://localhost:1433;DataBaseName=springbatch
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    # 初始化数据库，文件在依赖jar包中
+  sql:
+    init:
+      schema-locations: classpath:org/springframework/batch/core/schema-sqlserver.sql
+      #mode: always
+      mode: never

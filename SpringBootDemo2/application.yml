@@ -1,0 +1,14 @@
+server:
+  port: 8008
+spring:
+  datasource:
+    username: taobao
+    password: 123
+    url: jdbc:oracle:thin:@127.0.0.1:1521:orcl
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    type: com.alibaba.druid.pool.DruidDataSource
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.edu.seiryo.entity
+  configuration:
+    map-underscore-to-camel-case: true

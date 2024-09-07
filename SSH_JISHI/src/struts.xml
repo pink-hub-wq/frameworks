@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<package name="mystruts" extends="struts-default" namespace="/">
+		<action name="users_*" class="com.edu.seiryo.action.UserInfoAction" method="{1}">
+			<result name="orderInfo">/orderInfo.jsp</result>
+			<result name="login">/login.jsp</result>
+		</action>
+		<action name="order_*" class="com.edu.seiryo.action.OrderAction" method="{1}">
+			<result name="orderInfo">/orderInfo.jsp</result>
+		    <result name="index">/index.jsp</result>
+		    <result name="order">/order.jsp</result>
+		</action>
+		<action name="orderDetail_*" class="com.edu.seiryo.action.OrderInfoAction" method="{1}">
+			 <result name="orderInfo">/orderInfo.jsp</result>
+		</action>
+		<action name="shops_*" class="com.edu.seiryo.action.ShopInfoAction" method="{1}">
+			<result name="success">/order.jsp</result>
+			<result name="index">/index.jsp</result>
+			<result name="cart">/cart.jsp</result>
+		</action>
+	</package>
+</struts>

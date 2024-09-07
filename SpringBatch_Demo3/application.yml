@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    username: root
+    password: 123
+    url: jdbc:mysql://127.0.0.1:3306/springbatch
+    driver-class-name: com.mysql.jdbc.Driver
+    # 初始化数据库，文件在依赖jar包中
+  sql:
+    init:
+      schema-locations: classpath:schema-mysql5.5.sql
+      # mode: always
+      mode: never
+  #batch:
+    #job:
+     # enabled: false

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<package name="mystruts" extends="struts-default" namespace="/">
+		<action name="UserAction_*" class="com.edu.seiryo.action.UserAction" method="{1}">
+			<result name="success">success.jsp</result>
+		</action>
+	</package>
+</struts>

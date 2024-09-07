@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    username: root
+    password: 123
+    url: jdbc:mysql://127.0.0.1:3306/springbatch?useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+  sql:
+    init:
+      schema-locations: classpath:schema-mysql-v5.5.sql
+      #mode: always
+      mode: never

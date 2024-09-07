@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+<constant name="struts.devMode" value="true" />
+	<package name="mystruts" extends="struts-default" namespace="/">
+	 <interceptors>
+	 	<interceptor name="LoginInterceptor" class="com.edu.seiryo.interceptor.LoginInterceptor"/>
+	 	<interceptor name="UserTypeInterceptor" class="com.edu.seiryo.interceptor.UserTypeInterceptor"/>
+	 	
+	 	<interceptor-stack name="defaultMyInterceptor">
+	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+	 		<interceptor-ref name="LoginInterceptor">
+	 			<param name="excludeMethods">login</param>
+	 		</interceptor-ref>
+	 		<interceptor-ref name="UserTypeInterceptor">
+	 			 <param name="excludeMethods">add, update, delete, query</param>
+	 		</interceptor-ref>
+	 	</interceptor-stack>
+	 </interceptors>
+	 <default-interceptor-ref name="defaultMyInterceptor"></default-interceptor-ref>
+	<!-- 全局页面 -->
+	<global-results>
+		<result name="studentMain" >studentMain.jsp</result>
+		<result name="teacherMain" >teacherMain.jsp</result>
+		<result name="error" >error.jsp</result>
+		<result name="login" >login.jsp</result>
+		<result name="success" >success.jsp</result>
+	</global-results>
+		<action name="UserAction_*" class="com.edu.seiryo.action.UserAction" method="{1}" >
+		</action>
+	</package>
+</struts>

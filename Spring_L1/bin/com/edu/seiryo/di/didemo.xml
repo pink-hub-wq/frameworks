@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd">
+<bean id="user" class="com.edu.seiryo.di.User">
+	<property name="id" value="1"></property>
+	<property name="name" value="张三"></property>
+	<property name="pwd" value="123"></property>
+	<property name="address" ref="address"></property>
+</bean>
+<bean id="address" class="com.edu.seiryo.di.Address">
+	<property name="id" value="1"></property>
+	<property name="address" value="北京"></property>
+	<property name="addressNumber" value="010"></property>
+</bean>
+<bean id="UserServiceImp" class="com.edu.seiryo.di.UserServiceImp">
+	<property name="userDao" ref="UserDaoImp"></property>
+</bean>
+<bean id="UserDaoImp" class="com.edu.seiryo.di.UserDaoImp"></bean>
+</beans>

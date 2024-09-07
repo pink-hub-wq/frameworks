@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+<constant name="struts.devMode" value="true" />
+	<package name="mystruts" extends="struts-default" namespace="/">
+	<!-- 全局页面 -->
+	<global-results>
+		<result name="success" >success.jsp</result>
+	</global-results>
+	<!-- 默认，转发到页面 -->
+		<action name="UserAction_*" class="com.edu.seiryo.action.UserAction" method="{1}" >
+				<result name="success" type="dispatcher">success.jsp</result>
+		</action>
+	<!-- 重定向到页面 -->
+		<action name="TestAction_*" class="com.edu.seiryo.action.TestAction" method="{1}" >
+				<result name="success" type="redirect">success.jsp</result>
+		</action>
+	<!-- 重定向到action -->
+		<action name="RedirectAction_*" class="com.edu.seiryo.action.RedirectAction" method="{1}">
+            <result name="success" type="redirectAction">UserAction</result>
+        </action>
+    <!-- 默认，转发到action -->
+		<action name="ChainAction_*" class="com.edu.seiryo.action.ChainAction" method="{1}">
+            <result name="success" type="chain">UserAction</result>
+        </action>
+    <!-- ServletRequestAware接口 -->
+        <action name="UserAction2_*" class="com.edu.seiryo.action.UserAction2" method="{1}" >
+		</action>
+	<!-- ServletContextAware接口 -->
+        <action name="UserAction3_*" class="com.edu.seiryo.action.UserAction3" method="{1}" >
+		</action>
+	<!-- ServletResponseAware接口 -->
+        <action name="UserAction4_*" class="com.edu.seiryo.action.UserAction4" method="{1}" >
+		</action>
+	<!-- Struts模型驱动二 -->
+        <action name="UserModelAction_*" class="com.edu.seiryo.action.UserModelAction" method="{1}" >
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,33 @@
+server:
+  servlet:
+    context-path: /springboot3
+spring:
+  datasource:
+    username: taobao
+    password: 123
+    url: jdbc:oracle:thin:@127.0.0.1:1521:orcl
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    type: com.alibaba.druid.pool.DruidDataSource
+    diuid:
+      filters: stat,wall
+      stat-view-seervlet:
+        enabled: true
+        login-username: admin
+        login-password: 123
+      web-stat-filter:
+        enable: true
+        url-pattern: /*
+        exclusions: ' *.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+  thymeleaf:
+    cache: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  messages:
+    basename: i18n.login
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.edu.seiryo.entity
+  configuration:
+    map-underscore-to-camel-case: true

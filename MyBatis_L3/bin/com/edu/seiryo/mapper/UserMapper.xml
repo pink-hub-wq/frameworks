@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.seiryo.mapper.UserMapper">
+	<insert id="add">
+		insert into t_user
+		<trim suffixOverrides="," prefix="(" suffix=")">
+			<if test="userName != null and !userName.equals('')">user_name,</if>
+			<if test="userPwd != null and !userPwd.equals('')">user_pwd,</if>
+			<if test="gender != null and !gender.equals('')">gender,</if>
+		</trim>
+		values
+		<trim suffixOverrides="," prefix="(" suffix=")">
+			<if test="userName != null and !userName.equals('')">#{userName},</if>
+			<if test="userPwd != null and !userPwd.equals('')">#{userPwd},</if>
+			<if test="gender != null and !gender.equals('')">#{gender},</if>
+		</trim>
+	</insert>
+	<update id="update">
+		update t_user 
+		<set>
+			<if test="userName != null and !userName.equals('')">user_name = #{userName},</if>
+			<if test="userPwd != null and !userPwd.equals('')">user_pwd=#{userPwd},</if>
+			<if test="gender != null and !gender.equals('')">gender=#{gender},</if>
+		</set>
+	    where user_id = #{userId}
+	</update>
+	<delete id="delete">
+    delete from t_user where user_id in
+	    <foreach item="id" collection="array" open="(" separator="," close=")">
+	        #{id}
+	    </foreach>
+	</delete>
+	<sql id="sql">user_id,user_name,user_pwd,gender</sql>
+	<select id="query" resultType="user">
+		select 
+			<include refid="sql"/> 
+		from t_user  
+			<where>
+				<if test="userName != null and !userName.equals('')">
+					and user_name=#{userName}
+				</if>
+				<if test="userPwd != null and !userPwd.equals('')">
+					and user_pwd=#{userPwd}
+				</if>
+				<if test="gender != null and !gender.equals('')">
+					and gender=#{gender}
+				</if>
+			</where>
+	</select>
+	<select id="queryById" resultType="user">
+		select 
+			<include refid="sql"/> 
+		from t_user where user_id in
+			<foreach item="id" collection="array" open="(" separator="," close=")">
+	       		 #{id}
+	    	</foreach>
+	</select>
+</mapper>

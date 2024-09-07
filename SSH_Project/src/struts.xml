@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<package name="mystruts" extends="struts-default" namespace="/">
+		<action name="users_*" class="com.edu.seiryo.action.UserAction" method="{1}">
+			<result name="index">/index.jsp</result>
+			<result name="userslist">/manager/stus/userslist.jsp</result>
+			<result name="save">/manager/stus/save.jsp</result>
+			<result name="usersInfo">/manager/stus/usersInfo.jsp</result>
+		</action>
+	</package>
+</struts>
